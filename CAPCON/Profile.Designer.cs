@@ -35,9 +35,7 @@
             lblRole = new Label();
             btnImage = new Button();
             label6 = new Label();
-            pictureBox1 = new PictureBox();
             lblFName = new Label();
-            lblLName = new Label();
             label7 = new Label();
             panel3 = new Panel();
             tbxFirstName = new TextBox();
@@ -54,7 +52,6 @@
             btnSave = new Button();
             btnDelete = new Button();
             ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
             panel2.SuspendLayout();
@@ -118,35 +115,15 @@
             label6.TabIndex = 8;
             label6.Text = "ACCOUNT DETAILS";
             // 
-            // pictureBox1
-            // 
-            pictureBox1.BackgroundImage = (Image)resources.GetObject("pictureBox1.BackgroundImage");
-            pictureBox1.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox1.Location = new Point(12, 12);
-            pictureBox1.Name = "pictureBox1";
-            pictureBox1.Size = new Size(48, 55);
-            pictureBox1.TabIndex = 0;
-            pictureBox1.TabStop = false;
-            // 
             // lblFName
             // 
             lblFName.AutoSize = true;
-            lblFName.Font = new Font("Nirmala UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            lblFName.Location = new Point(66, 21);
+            lblFName.Font = new Font("Nirmala UI", 20.25F, FontStyle.Bold, GraphicsUnit.Point);
+            lblFName.Location = new Point(36, 24);
             lblFName.Name = "lblFName";
-            lblFName.Size = new Size(83, 21);
+            lblFName.Size = new Size(215, 37);
             lblFName.TabIndex = 1;
-            lblFName.Text = "firstname";
-            // 
-            // lblLName
-            // 
-            lblLName.AutoSize = true;
-            lblLName.Font = new Font("Nirmala UI", 12F, FontStyle.Bold, GraphicsUnit.Point);
-            lblLName.Location = new Point(147, 21);
-            lblLName.Name = "lblLName";
-            lblLName.Size = new Size(80, 21);
-            lblLName.TabIndex = 2;
-            lblLName.Text = "lastname";
+            lblFName.Text = "Profile Settings";
             // 
             // label7
             // 
@@ -321,15 +298,12 @@
             Controls.Add(label4);
             Controls.Add(label3);
             Controls.Add(pictureBox);
-            Controls.Add(lblLName);
             Controls.Add(lblFName);
-            Controls.Add(pictureBox1);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Profile";
             Text = "Profile";
             Load += Profile_Load;
             ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
-            ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
             panel1.ResumeLayout(false);
@@ -349,9 +323,7 @@
         private Label lblRole;
         private Button btnImage;
         private Label label6;
-        private PictureBox pictureBox1;
         private Label lblFName;
-        private Label lblLName;
         private Label label7;
         private Panel panel3;
         private TextBox tbxFirstName;

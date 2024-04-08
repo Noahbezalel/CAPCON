@@ -23,8 +23,6 @@ namespace CAPCON
 
         private void Profile_Load(object sender, EventArgs e)
         {
-            lblFName.Text = user.Firstname;
-            lblLName.Text = user.Lastname;
             lblRole.Text = user.UserType;
             tbxFirstName.Text = user.Firstname;
             tbxLastName.Text = user.Lastname;
@@ -96,7 +94,7 @@ namespace CAPCON
             {
                 try
                 {
-                    imageFilePath = openFileDialog.FileName; 
+                    imageFilePath = openFileDialog.FileName;
                     pictureBox.Image = Image.FromFile(imageFilePath);
                     pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
                 }

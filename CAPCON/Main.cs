@@ -19,6 +19,7 @@ namespace CAPCON
         private string password;
         private string name;
         private string role;
+        private string userimage;
         private int userID;
 
         public Main(string email, string password, int userID)
@@ -42,6 +43,14 @@ namespace CAPCON
             User user = User.GetUserById(userID);
             name = user.Firstname;
             role = user.UserType;
+            userimage = user.UserImage;
+            if (!string.IsNullOrEmpty(user.UserImage))
+            {
+                // Load the image from the Base64 string
+                Image loadedImage = User.Base64ToImage(user.UserImage);
+                pictureBox.Image = loadedImage;
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
+            }
         }
 
         private void UpdateLabels()

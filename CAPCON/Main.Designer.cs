@@ -33,26 +33,26 @@
             btnProfile = new Button();
             panel8 = new Panel();
             btnSignout = new Button();
-            button4 = new Button();
+            btnSchedule = new Button();
             panel7 = new Panel();
-            button3 = new Button();
+            btnGallery = new Button();
             panel6 = new Panel();
-            button2 = new Button();
+            btnExplore = new Button();
             panel5 = new Panel();
             button1 = new Button();
             panel4 = new Panel();
             panel3 = new Panel();
             pictureBox1 = new PictureBox();
             panel2 = new Panel();
+            pictureBox = new roundedPictureBox();
             lblRole = new Label();
             lblName = new Label();
-            pictureBox2 = new PictureBox();
             pnlContent = new Panel();
             panel1.SuspendLayout();
             panel3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             SuspendLayout();
             // 
             // panel1
@@ -61,11 +61,11 @@
             panel1.Controls.Add(btnProfile);
             panel1.Controls.Add(panel8);
             panel1.Controls.Add(btnSignout);
-            panel1.Controls.Add(button4);
+            panel1.Controls.Add(btnSchedule);
             panel1.Controls.Add(panel7);
-            panel1.Controls.Add(button3);
+            panel1.Controls.Add(btnGallery);
             panel1.Controls.Add(panel6);
-            panel1.Controls.Add(button2);
+            panel1.Controls.Add(btnExplore);
             panel1.Controls.Add(panel5);
             panel1.Controls.Add(button1);
             panel1.Controls.Add(panel4);
@@ -114,19 +114,19 @@
             btnSignout.UseVisualStyleBackColor = true;
             btnSignout.Click += btnSignout_Click;
             // 
-            // button4
+            // btnSchedule
             // 
-            button4.BackgroundImage = (Image)resources.GetObject("button4.BackgroundImage");
-            button4.BackgroundImageLayout = ImageLayout.Zoom;
-            button4.Cursor = Cursors.Hand;
-            button4.Dock = DockStyle.Top;
-            button4.FlatAppearance.BorderSize = 0;
-            button4.FlatStyle = FlatStyle.Flat;
-            button4.Location = new Point(0, 315);
-            button4.Name = "button4";
-            button4.Size = new Size(60, 35);
-            button4.TabIndex = 7;
-            button4.UseVisualStyleBackColor = true;
+            btnSchedule.BackgroundImage = (Image)resources.GetObject("btnSchedule.BackgroundImage");
+            btnSchedule.BackgroundImageLayout = ImageLayout.Zoom;
+            btnSchedule.Cursor = Cursors.Hand;
+            btnSchedule.Dock = DockStyle.Top;
+            btnSchedule.FlatAppearance.BorderSize = 0;
+            btnSchedule.FlatStyle = FlatStyle.Flat;
+            btnSchedule.Location = new Point(0, 315);
+            btnSchedule.Name = "btnSchedule";
+            btnSchedule.Size = new Size(60, 35);
+            btnSchedule.TabIndex = 7;
+            btnSchedule.UseVisualStyleBackColor = true;
             // 
             // panel7
             // 
@@ -136,19 +136,19 @@
             panel7.Size = new Size(60, 20);
             panel7.TabIndex = 6;
             // 
-            // button3
+            // btnGallery
             // 
-            button3.BackgroundImage = (Image)resources.GetObject("button3.BackgroundImage");
-            button3.BackgroundImageLayout = ImageLayout.Zoom;
-            button3.Cursor = Cursors.Hand;
-            button3.Dock = DockStyle.Top;
-            button3.FlatAppearance.BorderSize = 0;
-            button3.FlatStyle = FlatStyle.Flat;
-            button3.Location = new Point(0, 260);
-            button3.Name = "button3";
-            button3.Size = new Size(60, 35);
-            button3.TabIndex = 5;
-            button3.UseVisualStyleBackColor = true;
+            btnGallery.BackgroundImage = (Image)resources.GetObject("btnGallery.BackgroundImage");
+            btnGallery.BackgroundImageLayout = ImageLayout.Zoom;
+            btnGallery.Cursor = Cursors.Hand;
+            btnGallery.Dock = DockStyle.Top;
+            btnGallery.FlatAppearance.BorderSize = 0;
+            btnGallery.FlatStyle = FlatStyle.Flat;
+            btnGallery.Location = new Point(0, 260);
+            btnGallery.Name = "btnGallery";
+            btnGallery.Size = new Size(60, 35);
+            btnGallery.TabIndex = 5;
+            btnGallery.UseVisualStyleBackColor = true;
             // 
             // panel6
             // 
@@ -158,19 +158,19 @@
             panel6.Size = new Size(60, 20);
             panel6.TabIndex = 4;
             // 
-            // button2
+            // btnExplore
             // 
-            button2.BackgroundImage = (Image)resources.GetObject("button2.BackgroundImage");
-            button2.BackgroundImageLayout = ImageLayout.Zoom;
-            button2.Cursor = Cursors.Hand;
-            button2.Dock = DockStyle.Top;
-            button2.FlatAppearance.BorderSize = 0;
-            button2.FlatStyle = FlatStyle.Flat;
-            button2.Location = new Point(0, 205);
-            button2.Name = "button2";
-            button2.Size = new Size(60, 35);
-            button2.TabIndex = 3;
-            button2.UseVisualStyleBackColor = true;
+            btnExplore.BackgroundImage = (Image)resources.GetObject("btnExplore.BackgroundImage");
+            btnExplore.BackgroundImageLayout = ImageLayout.Zoom;
+            btnExplore.Cursor = Cursors.Hand;
+            btnExplore.Dock = DockStyle.Top;
+            btnExplore.FlatAppearance.BorderSize = 0;
+            btnExplore.FlatStyle = FlatStyle.Flat;
+            btnExplore.Location = new Point(0, 205);
+            btnExplore.Name = "btnExplore";
+            btnExplore.Size = new Size(60, 35);
+            btnExplore.TabIndex = 3;
+            btnExplore.UseVisualStyleBackColor = true;
             // 
             // panel5
             // 
@@ -226,15 +226,25 @@
             // panel2
             // 
             panel2.BackColor = Color.FromArgb(244, 245, 247);
+            panel2.Controls.Add(pictureBox);
             panel2.Controls.Add(lblRole);
             panel2.Controls.Add(lblName);
-            panel2.Controls.Add(pictureBox2);
             panel2.Dock = DockStyle.Top;
             panel2.Location = new Point(60, 0);
             panel2.Name = "panel2";
             panel2.Size = new Size(1024, 80);
             panel2.TabIndex = 1;
             panel2.Paint += panel2_Paint;
+            // 
+            // pictureBox
+            // 
+            pictureBox.BackgroundImage = (Image)resources.GetObject("pictureBox.BackgroundImage");
+            pictureBox.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox.Location = new Point(12, 14);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new Size(53, 53);
+            pictureBox.TabIndex = 3;
+            pictureBox.TabStop = false;
             // 
             // lblRole
             // 
@@ -257,16 +267,6 @@
             lblName.Size = new Size(68, 17);
             lblName.TabIndex = 1;
             lblName.Text = "username";
-            // 
-            // pictureBox2
-            // 
-            pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
-            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(15, 17);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(53, 50);
-            pictureBox2.TabIndex = 0;
-            pictureBox2.TabStop = false;
             // 
             // pnlContent
             // 
@@ -293,7 +293,7 @@
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel2.ResumeLayout(false);
             panel2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             ResumeLayout(false);
         }
 
@@ -305,18 +305,18 @@
         private Button button1;
         private Panel panel4;
         private Panel panel3;
-        private Button button2;
+        private Button btnExplore;
         private Panel panel5;
-        private Button button3;
+        private Button btnGallery;
         private Panel panel6;
-        private Button button4;
+        private Button btnSchedule;
         private Panel panel7;
         private Label lblName;
-        private PictureBox pictureBox2;
         private Label lblRole;
         private Button btnSignout;
         private Panel pnlContent;
         private Button btnProfile;
         private Panel panel8;
+        private roundedPictureBox pictureBox;
     }
 }
