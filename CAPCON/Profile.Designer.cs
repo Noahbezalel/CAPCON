@@ -29,11 +29,11 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Profile));
-            pictureBox2 = new PictureBox();
+            pictureBox = new PictureBox();
             label3 = new Label();
             label4 = new Label();
             lblRole = new Label();
-            button1 = new Button();
+            btnImage = new Button();
             label6 = new Label();
             pictureBox1 = new PictureBox();
             lblFName = new Label();
@@ -51,9 +51,9 @@
             panel4 = new Panel();
             tbxContact = new TextBox();
             label11 = new Label();
-            button2 = new Button();
-            button3 = new Button();
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).BeginInit();
+            btnSave = new Button();
+            btnDelete = new Button();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
             panel3.SuspendLayout();
             panel1.SuspendLayout();
@@ -61,20 +61,20 @@
             panel4.SuspendLayout();
             SuspendLayout();
             // 
-            // pictureBox2
+            // pictureBox
             // 
-            pictureBox2.BackgroundImage = (Image)resources.GetObject("pictureBox2.BackgroundImage");
-            pictureBox2.BackgroundImageLayout = ImageLayout.Zoom;
-            pictureBox2.Location = new Point(41, 140);
-            pictureBox2.Name = "pictureBox2";
-            pictureBox2.Size = new Size(131, 116);
-            pictureBox2.TabIndex = 3;
-            pictureBox2.TabStop = false;
+            pictureBox.BackgroundImage = (Image)resources.GetObject("pictureBox.BackgroundImage");
+            pictureBox.BackgroundImageLayout = ImageLayout.Zoom;
+            pictureBox.Location = new Point(66, 140);
+            pictureBox.Name = "pictureBox";
+            pictureBox.Size = new Size(131, 160);
+            pictureBox.TabIndex = 3;
+            pictureBox.TabStop = false;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(41, 122);
+            label3.Location = new Point(66, 122);
             label3.Name = "label3";
             label3.Size = new Size(90, 15);
             label3.TabIndex = 4;
@@ -99,14 +99,15 @@
             lblRole.TabIndex = 6;
             lblRole.Text = "Client";
             // 
-            // button1
+            // btnImage
             // 
-            button1.Location = new Point(41, 262);
-            button1.Name = "button1";
-            button1.Size = new Size(131, 23);
-            button1.TabIndex = 7;
-            button1.Text = "Change profile Image";
-            button1.UseVisualStyleBackColor = true;
+            btnImage.Location = new Point(66, 306);
+            btnImage.Name = "btnImage";
+            btnImage.Size = new Size(131, 23);
+            btnImage.TabIndex = 7;
+            btnImage.Text = "Change profile Image";
+            btnImage.UseVisualStyleBackColor = true;
+            btnImage.Click += btnImage_Click;
             // 
             // label6
             // 
@@ -277,23 +278,25 @@
             label11.TabIndex = 16;
             label11.Text = "Contact No.";
             // 
-            // button2
+            // btnSave
             // 
-            button2.Location = new Point(41, 537);
-            button2.Name = "button2";
-            button2.Size = new Size(210, 32);
-            button2.TabIndex = 18;
-            button2.Text = "Save Changes";
-            button2.UseVisualStyleBackColor = true;
+            btnSave.Location = new Point(41, 537);
+            btnSave.Name = "btnSave";
+            btnSave.Size = new Size(210, 32);
+            btnSave.TabIndex = 18;
+            btnSave.Text = "Save Changes";
+            btnSave.UseVisualStyleBackColor = true;
+            btnSave.Click += btnSave_Click;
             // 
-            // button3
+            // btnDelete
             // 
-            button3.Location = new Point(276, 537);
-            button3.Name = "button3";
-            button3.Size = new Size(210, 32);
-            button3.TabIndex = 19;
-            button3.Text = "Cancel";
-            button3.UseVisualStyleBackColor = true;
+            btnDelete.Location = new Point(276, 537);
+            btnDelete.Name = "btnDelete";
+            btnDelete.Size = new Size(210, 32);
+            btnDelete.TabIndex = 19;
+            btnDelete.Text = "Delete";
+            btnDelete.UseVisualStyleBackColor = true;
+            btnDelete.Click += btnDelete_Click;
             // 
             // Profile
             // 
@@ -301,8 +304,8 @@
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = Color.White;
             ClientSize = new Size(1024, 581);
-            Controls.Add(button3);
-            Controls.Add(button2);
+            Controls.Add(btnDelete);
+            Controls.Add(btnSave);
             Controls.Add(panel4);
             Controls.Add(label11);
             Controls.Add(panel2);
@@ -313,11 +316,11 @@
             Controls.Add(label8);
             Controls.Add(label7);
             Controls.Add(label6);
-            Controls.Add(button1);
+            Controls.Add(btnImage);
             Controls.Add(lblRole);
             Controls.Add(label4);
             Controls.Add(label3);
-            Controls.Add(pictureBox2);
+            Controls.Add(pictureBox);
             Controls.Add(lblLName);
             Controls.Add(lblFName);
             Controls.Add(pictureBox1);
@@ -325,7 +328,7 @@
             Name = "Profile";
             Text = "Profile";
             Load += Profile_Load;
-            ((System.ComponentModel.ISupportInitialize)pictureBox2).EndInit();
+            ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
             ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
@@ -340,11 +343,11 @@
         }
 
         #endregion
-        private PictureBox pictureBox2;
+        private PictureBox pictureBox;
         private Label label3;
         private Label label4;
         private Label lblRole;
-        private Button button1;
+        private Button btnImage;
         private Label label6;
         private PictureBox pictureBox1;
         private Label lblFName;
@@ -362,7 +365,7 @@
         private Panel panel4;
         private TextBox tbxContact;
         private Label label11;
-        private Button button2;
-        private Button button3;
+        private Button btnSave;
+        private Button btnDelete;
     }
 }
