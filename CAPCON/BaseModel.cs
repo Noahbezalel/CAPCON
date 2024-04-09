@@ -10,7 +10,6 @@ namespace CAPCON
 {
     public class BaseModel
     {
-        //string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\Projects\\CaptureConnectDB\\CaptureConnectDB.accdb";
 
         public readonly string connectionString;
 

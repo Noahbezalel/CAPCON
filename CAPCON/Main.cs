@@ -101,5 +101,14 @@ namespace CAPCON
             home.BringToFront();
             home.Show();
         }
+
+        private void btnExplore_Click(object sender, EventArgs e)
+        {
+            Explore explore = new Explore();
+            explore.TopLevel = false;
+            pnlContent.Controls.Add(explore);
+            explore.BringToFront();
+            explore.Show();
+        }
     }
 }

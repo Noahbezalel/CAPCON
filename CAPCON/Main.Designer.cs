@@ -171,6 +171,7 @@
             btnExplore.Size = new Size(60, 35);
             btnExplore.TabIndex = 3;
             btnExplore.UseVisualStyleBackColor = true;
+            btnExplore.Click += btnExplore_Click;
             // 
             // panel5
             // 

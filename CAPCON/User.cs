@@ -46,12 +46,6 @@ namespace CAPCON
                 user.Contact = row["contact_info"].ToString();
                 user.UserID = Convert.ToInt32(row["UserID"]);
                 user.UserImage = row["UserImage"].ToString();
-
-                // Proper conversion of UserImage
-              //  if (row["UserImage"] != DBNull.Value)
-             //   {
-                    // Convert byte array to string (if UserImage is actually stored as byte array in the database)
-             //   }
             }
             else
             {
@@ -126,8 +120,6 @@ namespace CAPCON
             }
         }
 
-
-
         public bool DeleteUser()
         {
             // Delete related records in the 'Clients' table
@@ -153,7 +145,30 @@ namespace CAPCON
             }
         }
 
+        public static List<User> GetPhotographers()
+        {
+            User user = new User();
+            List<User> photographers = new List<User>();
+            string query = "SELECT * FROM Users WHERE UserType = 'Photographer'";
+            DataTable photographerData = user.ExecuteQuery(query);
 
+            foreach (DataRow row in photographerData.Rows)
+            {
+                User photographer = new User
+                {
+                    UserID = Convert.ToInt32(row["UserID"]),
+                    Firstname = row["FirstName"].ToString(),
+                    Lastname = row["LastName"].ToString(),
+                    Email = row["email"].ToString(),
+                    UserType = row["user_type"].ToString(),
+                    Contact = row["contact_info"].ToString(),
+                    UserImage = row["UserImage"].ToString() 
+                };
+                photographers.Add(photographer);
+            }
+
+            return photographers;
+        }
 
     }
 }

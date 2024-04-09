@@ -28,19 +28,35 @@
         /// </summary>
         private void InitializeComponent()
         {
+            dgvList = new DataGridView();
+            ((System.ComponentModel.ISupportInitialize)dgvList).BeginInit();
             SuspendLayout();
+            // 
+            // dgvList
+            // 
+            dgvList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dgvList.Location = new Point(12, 12);
+            dgvList.Name = "dgvList";
+            dgvList.RowTemplate.Height = 25;
+            dgvList.Size = new Size(580, 557);
+            dgvList.TabIndex = 0;
+            dgvList.CellContentClick += dgvList_CellContentClick;
             // 
             // Explore
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1024, 581);
+            Controls.Add(dgvList);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Explore";
             Text = "Explore";
+            ((System.ComponentModel.ISupportInitialize)dgvList).EndInit();
             ResumeLayout(false);
         }
 
         #endregion
+
+        private DataGridView dgvList;
     }
 }
