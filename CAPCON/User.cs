@@ -24,6 +24,7 @@ namespace CAPCON
         public string UserType { get; set;}
         public string Contact { get; set; }
         public string UserImage { get; set; }
+        
 
 
         public static User GetUserById(int userID)
@@ -88,19 +89,18 @@ namespace CAPCON
         }
 
         public bool UpdateUser(string imagePath)
-
         {
             string query;
             if (!string.IsNullOrEmpty(imagePath))
             {
                 UserImage = ImageToBase64(imagePath);
-           
-                query = $"UPDATE Users SET FirstName = '{Firstname}', LastName = '{Lastname}', email = '{Email}', contact_info = '{Contact}', UserImage = '{UserImage}' WHERE UserID = {UserID}";
+
+                query = $"UPDATE Users SET FirstName = @FirstName, LastName = @LastName, email = @Email, contact_info = @Contact, UserImage = @UserImage WHERE UserID = {UserID}";
 
             }
             else
             {
-                query = $"UPDATE Users SET FirstName = '{Firstname}', LastName = '{Lastname}', email = '{Email}', contact_info = '{Contact}' WHERE UserID = {UserID}";
+                query = $"UPDATE Users SET FirstName = @FirstName, LastName = @LastName, email = @Email, contact_info = @Contact WHERE UserID = {UserID}";
             }
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -114,11 +114,17 @@ namespace CAPCON
                     command.Parameters.AddWithValue("@Email", Email);
                     command.Parameters.AddWithValue("@Contact", Contact);
 
+                    if (!string.IsNullOrEmpty(imagePath))
+                    {
+                        command.Parameters.AddWithValue("@UserImage", UserImage);
+                    }
+
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }
         }
+
 
         public bool DeleteUser()
         {
@@ -147,28 +153,24 @@ namespace CAPCON
 
         public static List<User> GetPhotographers()
         {
-            User user = new User();
             List<User> photographers = new List<User>();
-            string query = "SELECT * FROM Users WHERE UserType = 'Photographer'";
-            DataTable photographerData = user.ExecuteQuery(query);
+            string query = "SELECT FirstName, LastName, email, user_type, contact_info FROM PhotographerList";
+            DataTable photographerData = new User().ExecuteQuery(query);
 
             foreach (DataRow row in photographerData.Rows)
             {
                 User photographer = new User
                 {
-                    UserID = Convert.ToInt32(row["UserID"]),
                     Firstname = row["FirstName"].ToString(),
                     Lastname = row["LastName"].ToString(),
                     Email = row["email"].ToString(),
                     UserType = row["user_type"].ToString(),
                     Contact = row["contact_info"].ToString(),
-                    UserImage = row["UserImage"].ToString() 
                 };
                 photographers.Add(photographer);
             }
 
             return photographers;
         }
-
     }
 }

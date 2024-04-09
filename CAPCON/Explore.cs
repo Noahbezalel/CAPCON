@@ -16,6 +16,7 @@ namespace CAPCON
         {
             InitializeComponent();
             PopulateDataGridView();
+            dgvList.Columns[dgvList.Columns.Count - 1].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
         }
 
         private void dgvList_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -24,23 +25,37 @@ namespace CAPCON
         }
         private void PopulateDataGridView()
         {
-            // Call the GetPhotographers() method to retrieve photographers
-            List<User> photographers = User.GetPhotographers();
-
-            // Clear existing columns
+  
             dgvList.Columns.Clear();
+            dgvList.AutoGenerateColumns = true;
 
-            // Add columns manually based on selected properties
-            dgvList.Columns.Add("UserID", "User ID");
-            dgvList.Columns.Add("Firstname", "First Name");
-            dgvList.Columns.Add("Lastname", "Last Name");
-            dgvList.Columns.Add("Email", "Email");
-            dgvList.Columns.Add("Contact", "Contact");
-            // You may add more columns as needed...
+            try
+            {
+                // Fetch data from the database
+                List<User> photographers = User.GetPhotographers();
 
-            // Bind the list of photographers to the DataGridView
-            dgvList.DataSource = photographers;
+                // Check if any data is returned
+                if (photographers != null && photographers.Count > 0)
+                {
+                   
+                    dgvList.DataSource = photographers;
+
+                    dgvList.AutoResizeColumns();
+                }
+                else
+                {
+                  
+                    MessageBox.Show("No data found.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, such as database connection errors
+                MessageBox.Show($"An error occurred while fetching data: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
+
+
 
     }
 }

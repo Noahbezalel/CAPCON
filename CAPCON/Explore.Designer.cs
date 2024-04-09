@@ -34,11 +34,13 @@
             // 
             // dgvList
             // 
+            dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
+            dgvList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
             dgvList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             dgvList.Location = new Point(12, 12);
             dgvList.Name = "dgvList";
             dgvList.RowTemplate.Height = 25;
-            dgvList.Size = new Size(580, 557);
+            dgvList.Size = new Size(698, 264);
             dgvList.TabIndex = 0;
             dgvList.CellContentClick += dgvList_CellContentClick;
             // 
