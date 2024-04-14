@@ -35,12 +35,9 @@ namespace CAPCON
                 // Load the image from the Base64 string
                 Image loadedImage = User.Base64ToImage(user.UserImage);
                 pictureBox.Image = loadedImage;
-                pictureBox.SizeMode = PictureBoxSizeMode.Zoom;
+                pictureBox.SizeMode = PictureBoxSizeMode.StretchImage;
             }
         }
-
-
-
 
 
         private void btnSave_Click(object sender, EventArgs e)

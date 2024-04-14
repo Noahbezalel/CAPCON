@@ -61,7 +61,10 @@ namespace CAPCON
                             // Retrieve userID from database
                             int userID = GetUserIDFromDatabase(email);
 
-                            // Open the Main form with userID
+                            // Set the UserID in the session
+                            SessionManager.SetSessionValue("UserID", userID);
+
+                            // Open the Main form
                             Main mainForm = new Main(email, password, userID);
                             mainForm.Show();
                             this.Hide();
@@ -78,6 +81,7 @@ namespace CAPCON
                 }
             }
         }
+
 
         private int GetUserIDFromDatabase(string email)
         {

@@ -127,6 +127,7 @@
             btnSchedule.Size = new Size(60, 35);
             btnSchedule.TabIndex = 7;
             btnSchedule.UseVisualStyleBackColor = true;
+            btnSchedule.Click += btnSchedule_Click;
             // 
             // panel7
             // 
@@ -149,6 +150,7 @@
             btnGallery.Size = new Size(60, 35);
             btnGallery.TabIndex = 5;
             btnGallery.UseVisualStyleBackColor = true;
+            btnGallery.Click += btnGallery_Click;
             // 
             // panel6
             // 

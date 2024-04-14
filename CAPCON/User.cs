@@ -9,10 +9,62 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using System.Drawing;
 using System.IO;
+using System.Net.Http;
+
 
 
 namespace CAPCON
 {
+    public class SessionManager
+    {
+        private static Dictionary<string, object> sessionData = new Dictionary<string, object>();
+
+        public static void SetSessionValue(string key, object value)
+        {
+            if (sessionData.ContainsKey(key))
+            {
+                sessionData[key] = value;
+            }
+            else
+            {
+                sessionData.Add(key, value);
+            }
+        }
+
+        public static object GetSessionValue(string key)
+        {
+            if (sessionData.ContainsKey(key))
+            {
+                return sessionData[key];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static int GetLoggedInUserID()
+        {
+            // Retrieve the UserID from session data
+            if (GetSessionValue("UserID") != null)
+            {
+                // Cast the UserID from session to int and return it
+                return (int)GetSessionValue("UserID");
+            }
+            else
+            {
+                // Return a default value or handle the absence of UserID in session based on your application's logic
+                return -1; // or throw an exception, return null, etc.
+            }
+        }
+    }
+    public class Booking
+    {
+        public int BookingID { get; set; }
+        public int ClientID { get; set; }
+        public int PhotographerID { get; set; }
+        public DateTime BookingDate { get; set; }
+    }
     public class User : BaseModel
     {
         public int UserID { get; set; }
@@ -24,7 +76,8 @@ namespace CAPCON
         public string UserType { get; set;}
         public string Contact { get; set; }
         public string UserImage { get; set; }
-        
+        public int PhotographerID { get; set; }
+
 
 
         public static User GetUserById(int userID)
@@ -125,6 +178,90 @@ namespace CAPCON
             }
         }
 
+        public bool UploadPhotos(PictureBox pictureBox)
+        {
+            string query = $"INSERT INTO Users Set (PhotoData) VALUES (@PhotoData)";
+
+            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            {
+                connection.Open();
+                using (OleDbCommand command = new OleDbCommand(query, connection))
+                {
+                    // Convert PictureBox image to byte array
+                    byte[] photoBytes = ImageToByteArray(pictureBox.Image);
+
+                    // Add photoBytes as parameter
+                    command.Parameters.AddWithValue("@PhotoData", photoBytes);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+        private byte[] ImageToByteArray(Image imageIn)
+        {
+            using (MemoryStream ms = new MemoryStream())
+            {
+                imageIn.Save(ms, System.Drawing.Imaging.ImageFormat.Jpeg); // Change the format according to your requirement
+                return ms.ToArray();
+            }
+        }
+
+        public List<Image> GetImagesFromDatabase()
+        {
+            List<Image> images = new List<Image>();
+
+            string query = "SELECT PhotoData FROM Photos"; // Replace YourTableName with the actual table name
+            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            {
+                using (OleDbCommand command = new OleDbCommand(query, connection))
+                {
+                    try
+                    {
+                        connection.Open();
+                        using (OleDbDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                if (!reader.IsDBNull(0)) // Check if the field is not null
+                                {
+                                    byte[] imageData = (byte[])reader["PhotoData"];
+                                    Image image = ByteArrayToImage(imageData);
+                                    if (image != null)
+                                    {
+                                        images.Add(image);
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        Console.WriteLine("Error retrieving images from database: " + ex.Message);
+                    }
+                }
+            }
+
+            return images;
+        }
+
+        private Image ByteArrayToImage(byte[] byteArray)
+        {
+            try
+            {
+                using (MemoryStream ms = new MemoryStream(byteArray))
+                {
+                    Image image = Image.FromStream(ms);
+                    return image;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error converting byte array to image: " + ex.Message);
+                return null;
+            }
+        }
 
         public bool DeleteUser()
         {
@@ -154,23 +291,167 @@ namespace CAPCON
         public static List<User> GetPhotographers()
         {
             List<User> photographers = new List<User>();
-            string query = "SELECT FirstName, LastName, email, user_type, contact_info FROM PhotographerList";
+
+            // SQL query to select data from Users table and join with Photographers table
+            string query = @"SELECT Users.UserID, Users.FirstName, Users.LastName, Users.email, Photographers.PhotographerID
+                     FROM Users
+                     INNER JOIN Photographers ON Users.UserID = Photographers.UserID";
+
+            // Execute the query and retrieve data into a DataTable
             DataTable photographerData = new User().ExecuteQuery(query);
 
+            // Iterate through the DataTable rows and populate the list of User objects
             foreach (DataRow row in photographerData.Rows)
             {
                 User photographer = new User
                 {
+                    UserID = Convert.ToInt32(row["UserID"]),
                     Firstname = row["FirstName"].ToString(),
                     Lastname = row["LastName"].ToString(),
                     Email = row["email"].ToString(),
-                    UserType = row["user_type"].ToString(),
-                    Contact = row["contact_info"].ToString(),
+                    // Assuming PhotographerID is present in the result set
+                    PhotographerID = Convert.ToInt32(row["PhotographerID"])
                 };
                 photographers.Add(photographer);
             }
 
             return photographers;
+        }
+
+        public bool CreateBooking(int clientId, int photographerId, DateTime bookingDate)
+        {
+            string query = "INSERT INTO Bookings (ClientID, PhotographerID, BookingDate) " +
+                           "VALUES (@ClientID, @PhotographerID, @BookingDate)";
+
+            using (OleDbConnection connection = new OleDbConnection(connectionString))
+            {
+                connection.Open();
+                using (OleDbCommand command = new OleDbCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@ClientID", clientId);
+                    command.Parameters.AddWithValue("@PhotographerID", photographerId);
+                    command.Parameters.AddWithValue("@BookingDate", bookingDate);
+   
+                    int rowsAffected = command.ExecuteNonQuery();
+                    return rowsAffected > 0;
+                }
+            }
+        }
+
+        public List<Booking> GetUserBookings(int userId)
+        {
+            List<Booking> bookings = new List<Booking>();
+
+            try
+            {
+                // SQL query to fetch bookings associated with the specified userID
+                string query = "SELECT * FROM Bookings WHERE ClientID = @UserID OR PhotographerID = @UserID";
+
+                // Execute the query and retrieve data into a DataTable
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserID", userId);
+
+                        DataTable bookingData = new DataTable();
+                        using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+                        {
+                            adapter.Fill(bookingData);
+                        }
+
+                        // Iterate through the DataTable rows and populate the list of Booking objects
+                        foreach (DataRow row in bookingData.Rows)
+                        {
+                            // Check if the booking is associated with the logged-in user
+                            int clientID = Convert.ToInt32(row["ClientID"]);
+                            int photographerID = Convert.ToInt32(row["PhotographerID"]);
+                            if (clientID == userId || photographerID == userId)
+                            {
+                                Booking booking = new Booking
+                                {
+                                    BookingID = Convert.ToInt32(row["BookingID"]),
+                                    ClientID = clientID,
+                                    PhotographerID = photographerID,
+                                    BookingDate = Convert.ToDateTime(row["BookingDate"])
+                                };
+                                bookings.Add(booking);
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, such as database connection errors
+                Console.WriteLine($"An error occurred while fetching bookings: {ex.Message}");
+            }
+
+            return bookings;
+        }
+
+        public bool DeleteBooking(int bookingID)
+        {
+            // Construct the SQL query to delete the booking with the given booking ID
+            string query = "DELETE FROM Bookings WHERE BookingID = @BookingID";
+
+            // Use a try-catch block to handle any potential exceptions
+            try
+            {
+                // Open a connection to the database
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+                    // Create a command with parameters for the booking ID
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@BookingID", bookingID);
+                        // Execute the command
+                        int rowsAffected = command.ExecuteNonQuery();
+                        // Check if any rows were affected (i.e., if the booking was successfully deleted)
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions, such as database connection errors
+                Console.WriteLine($"An error occurred while deleting the booking: {ex.Message}");
+                return false; // Return false to indicate that the deletion failed
+            }
+        }
+
+        public bool UpdateBooking(int bookingID, DateTime newBookingDate)
+        {
+            // Construct the SQL query to update the booking date
+            string query = "UPDATE Bookings SET BookingDate = @BookingDate WHERE BookingID = @BookingID";
+
+            // Use a try-catch block to handle any potential exceptions
+            try
+            {
+                // Open a connection to the database
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+                    // Create a command with parameters for the new booking date and the booking ID
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@BookingDate", newBookingDate);
+                        command.Parameters.AddWithValue("@BookingID", bookingID);
+                        // Execute the command
+                        int rowsAffected = command.ExecuteNonQuery();
+                        // Check if any rows were affected (i.e., if the booking date was successfully updated)
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions, such as database connection errors
+                Console.WriteLine($"An error occurred while updating the booking: {ex.Message}");
+                return false; // Return false to indicate that the update failed
+            }
         }
     }
 }

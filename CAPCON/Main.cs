@@ -110,5 +110,24 @@ namespace CAPCON
             explore.BringToFront();
             explore.Show();
         }
+
+        private void btnGallery_Click(object sender, EventArgs e)
+        {
+            Gallery gallery = new Gallery();
+            gallery.TopLevel = false;
+            pnlContent.Controls.Add(gallery);
+            gallery.BringToFront();
+            gallery.Show();
+        }
+
+        private void btnSchedule_Click(object sender, EventArgs e)
+        {
+            User user = User.GetUserById(userID);
+            Schedule schedule = new Schedule(userID, user);
+            schedule.TopLevel = false;
+            pnlContent.Controls.Add(schedule);
+            schedule.BringToFront();
+            schedule.Show();
+        }
     }
 }
