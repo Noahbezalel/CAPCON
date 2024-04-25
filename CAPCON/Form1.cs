@@ -8,7 +8,7 @@ namespace CAPCON
     {
         private string email;
         private string password;
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\Projects\\CaptureConnectDB\\CaptureConnectDB.accdb";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Noah\\source\\database\\CaptureConnectDB.accdb";
         private bool rememberMeChecked = false;
 
         public Form1()
@@ -89,7 +89,7 @@ namespace CAPCON
             int userID = -1; // Default value if the userID is not found or an error occurs
 
             // Connection string
-            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\Projects\\CaptureConnectDB\\CaptureConnectDB.accdb";
+            string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Noah\\source\\database\\CaptureConnectDB.accdb";
 
             // SQL query to retrieve userID based on email
             string query = "SELECT UserID FROM Users WHERE email = @Email";

@@ -15,7 +15,7 @@ namespace CAPCON
 {
     public partial class FormRegistration : Form
     {
-        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\Projects\\CaptureConnectDB\\CaptureConnectDB.accdb";
+        private string connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Noah\\source\\database\\CaptureConnectDB.accdb";
         public FormRegistration()
         {
             InitializeComponent();

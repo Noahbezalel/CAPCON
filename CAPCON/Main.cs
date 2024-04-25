@@ -36,6 +36,7 @@ namespace CAPCON
 
             // Update labels with user information
             UpdateLabels();
+            LoadHomeForm();
         }
 
         private void GetUserInformation(int userID)
@@ -95,7 +96,8 @@ namespace CAPCON
 
         private void button1_Click(object sender, EventArgs e)
         {
-            Home home = new Home();
+            User user = User.GetUserById(userID);
+            Home home = new Home(userID);
             home.TopLevel = false;
             pnlContent.Controls.Add(home);
             home.BringToFront();
@@ -128,6 +130,16 @@ namespace CAPCON
             pnlContent.Controls.Add(schedule);
             schedule.BringToFront();
             schedule.Show();
+        }
+
+        private void LoadHomeForm()
+        {
+            User user = User.GetUserById(userID);
+            Home home = new Home(userID);
+            home.TopLevel = false;
+            pnlContent.Controls.Add(home);
+            home.BringToFront();
+            home.Show();
         }
     }
 }

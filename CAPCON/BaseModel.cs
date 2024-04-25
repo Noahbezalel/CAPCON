@@ -15,7 +15,7 @@ namespace CAPCON
 
         public BaseModel()
         {
-            this.connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=D:\\Projects\\CaptureConnectDB\\CaptureConnectDB.accdb";
+            this.connectionString = @"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Users\\Noah\\source\\database\\CaptureConnectDB.accdb";
         }
 
         // Method to execute SELECT queries

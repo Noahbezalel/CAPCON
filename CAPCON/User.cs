@@ -64,6 +64,11 @@ namespace CAPCON
         public int ClientID { get; set; }
         public int PhotographerID { get; set; }
         public DateTime BookingDate { get; set; }
+        public string Status { get; set; }
+
+        public string ClientName { get; set; }
+        public string PhotographerName { get; set; }
+        public TimeSpan BookingTime { get; set; }
     }
     public class User : BaseModel
     {
@@ -318,10 +323,10 @@ namespace CAPCON
             return photographers;
         }
 
-        public bool CreateBooking(int clientId, int photographerId, DateTime bookingDate)
+        public bool CreateBooking(int clientId, int photographerId, DateTime bookingDate, TimeSpan bookingTime, string clientName, string photographerName)
         {
-            string query = "INSERT INTO Bookings (ClientID, PhotographerID, BookingDate) " +
-                           "VALUES (@ClientID, @PhotographerID, @BookingDate)";
+            string query = "INSERT INTO Bookings (ClientID, PhotographerID, BookingDate, BookingTime, Status, ClientName, PhotographerName) " +
+                           "VALUES (@ClientID, @PhotographerID, @BookingDate, @BookingTime, @Status, @ClientName, @PhotographerName)";
 
             using (OleDbConnection connection = new OleDbConnection(connectionString))
             {
@@ -331,12 +336,17 @@ namespace CAPCON
                     command.Parameters.AddWithValue("@ClientID", clientId);
                     command.Parameters.AddWithValue("@PhotographerID", photographerId);
                     command.Parameters.AddWithValue("@BookingDate", bookingDate);
-   
+                    command.Parameters.AddWithValue("@BookingTime", bookingTime); // Add booking time parameter
+                    command.Parameters.AddWithValue("@Status", "pending"); // Set status to 'pending'
+                    command.Parameters.AddWithValue("@ClientName", clientName); // Add client name parameter
+                    command.Parameters.AddWithValue("@PhotographerName", photographerName); // Add photographer name parameter
                     int rowsAffected = command.ExecuteNonQuery();
                     return rowsAffected > 0;
                 }
             }
         }
+
+
 
         public List<Booking> GetUserBookings(int userId)
         {
@@ -344,8 +354,8 @@ namespace CAPCON
 
             try
             {
-                // SQL query to fetch bookings associated with the specified userID
-                string query = "SELECT * FROM Bookings WHERE ClientID = @UserID OR PhotographerID = @UserID";
+                // SQL query to fetch bookings associated with the specified userID and status 'pending'
+                string query = "SELECT * FROM Bookings WHERE (ClientID = @UserID OR PhotographerID = @UserID) AND Status = 'pending'";
 
                 // Execute the query and retrieve data into a DataTable
                 using (OleDbConnection connection = new OleDbConnection(connectionString))
@@ -373,9 +383,17 @@ namespace CAPCON
                                 {
                                     BookingID = Convert.ToInt32(row["BookingID"]),
                                     ClientID = clientID,
+                                    ClientName = row["ClientName"].ToString(),
                                     PhotographerID = photographerID,
-                                    BookingDate = Convert.ToDateTime(row["BookingDate"])
+                                    PhotographerName = row["PhotographerName"].ToString(),
+                                    BookingDate = Convert.ToDateTime(row["BookingDate"]),
+                                    Status = row["Status"].ToString() // Populate the status property
                                 };
+                                if (!row.IsNull("BookingTime"))
+                                {
+                                    // If not null, parse the BookingTime field into a TimeSpan
+                                    booking.BookingTime = ((DateTime)row["BookingTime"]).TimeOfDay;
+                                }
                                 bookings.Add(booking);
                             }
                         }
@@ -390,6 +408,7 @@ namespace CAPCON
 
             return bookings;
         }
+
 
         public bool DeleteBooking(int bookingID)
         {
@@ -453,5 +472,151 @@ namespace CAPCON
                 return false; // Return false to indicate that the update failed
             }
         }
+
+        public bool ConfirmBooking(int bookingID)
+        {
+            // Construct the SQL query to update the status of the booking to 'confirmed'
+            string query = "UPDATE Bookings SET Status = 'confirmed' WHERE BookingID = @BookingID";
+
+            // Use a try-catch block to handle any potential exceptions
+            try
+            {
+                // Open a connection to the database
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+                    // Create a command with parameters for the booking ID
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@BookingID", bookingID);
+                        // Execute the command
+                        int rowsAffected = command.ExecuteNonQuery();
+                        // Check if any rows were affected (i.e., if the status was successfully updated)
+                        return rowsAffected > 0;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle any exceptions, such as database connection errors
+                Console.WriteLine($"An error occurred while confirming the booking: {ex.Message}");
+                return false; // Return false to indicate that the confirmation failed
+            }
+        }
+
+        public List<Booking> GetConfirmedBookings(int userId)
+        {
+            List<Booking> confirmedBookings = new List<Booking>();
+
+            try
+            {
+                // SQL query to fetch bookings associated with the specified userID and status 'confirmed'
+                string query = "SELECT * FROM Bookings WHERE (ClientID = @UserID OR PhotographerID = @UserID) AND Status = 'confirmed'";
+
+                // Execute the query and retrieve data into a DataTable
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserID", userId);
+
+                        DataTable bookingData = new DataTable();
+                        using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+                        {
+                            adapter.Fill(bookingData);
+                        }
+
+                        // Iterate through the DataTable rows and populate the list of Booking objects
+                        foreach (DataRow row in bookingData.Rows)
+                        {
+                            // Populate the Booking object
+                            Booking booking = new Booking
+                            {
+                                BookingID = Convert.ToInt32(row["BookingID"]),
+                                ClientID = Convert.ToInt32(row["ClientID"]),
+                                PhotographerID = Convert.ToInt32(row["PhotographerID"]),
+                                BookingDate = Convert.ToDateTime(row["BookingDate"]),
+                                ClientName = row["ClientName"].ToString(),
+                                PhotographerName = row["PhotographerName"].ToString(),
+                                Status = row["Status"].ToString() // Populate the status property
+                            };
+                            if (!row.IsNull("BookingTime"))
+                            {
+                                // If not null, parse the BookingTime field into a TimeSpan
+                                booking.BookingTime = ((DateTime)row["BookingTime"]).TimeOfDay;
+                            }
+
+                            confirmedBookings.Add(booking);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, such as database connection errors
+                Console.WriteLine($"An error occurred while fetching confirmed bookings: {ex.Message}");
+            }
+
+            return confirmedBookings;
+        }
+
+        public List<Booking> GetFinishedBookings(int userId)
+        {
+            List<Booking> finishedBookings = new List<Booking>();
+
+            try
+            {
+                // SQL query to fetch bookings associated with the specified userID and status 'finished'
+                string query = "SELECT * FROM Bookings WHERE (ClientID = @UserID OR PhotographerID = @UserID) AND Status = 'finished'";
+
+                // Execute the query and retrieve data into a DataTable
+                using (OleDbConnection connection = new OleDbConnection(connectionString))
+                {
+                    connection.Open();
+                    using (OleDbCommand command = new OleDbCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@UserID", userId);
+
+                        DataTable bookingData = new DataTable();
+                        using (OleDbDataAdapter adapter = new OleDbDataAdapter(command))
+                        {
+                            adapter.Fill(bookingData);
+                        }
+
+                        // Iterate through the DataTable rows and populate the list of Booking objects
+                        foreach (DataRow row in bookingData.Rows)
+                        {
+                            // Populate the Booking object
+                            Booking booking = new Booking
+                            {
+                                BookingID = Convert.ToInt32(row["BookingID"]),
+                                ClientID = Convert.ToInt32(row["ClientID"]),
+                                PhotographerID = Convert.ToInt32(row["PhotographerID"]),
+                                BookingDate = Convert.ToDateTime(row["BookingDate"]),
+                                ClientName = row["ClientName"].ToString(),
+                                PhotographerName = row["PhotographerName"].ToString(),
+                                Status = row["Status"].ToString() // Populate the status property
+                            };
+                            if (!row.IsNull("BookingTime"))
+                            {
+                                // If not null, parse the BookingTime field into a TimeSpan
+                                booking.BookingTime = ((DateTime)row["BookingTime"]).TimeOfDay;
+                            }
+
+                            finishedBookings.Add(booking);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions, such as database connection errors
+                Console.WriteLine($"An error occurred while fetching finished bookings: {ex.Message}");
+            }
+
+            return finishedBookings;
+        }
+
     }
 }

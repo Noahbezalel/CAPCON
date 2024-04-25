@@ -23,6 +23,18 @@ namespace CAPCON
             this.userId = userId;
             this.user = user; // Assign the passed user object to the user property
             PopulateDataGridView(userId);
+
+            if (user.UserType == "Photographer")
+            {
+                // If the user is a photographer, show the pnlConsched panel
+                pnlConsched.Visible = true;
+                pnlConsched.BringToFront();
+            }
+            else
+            {
+                // If the user is not a photographer, hide the pnlConsched panel
+                pnlConsched.Visible = false;
+            }
         }
 
         private void PopulateDataGridView(int userId)
@@ -37,9 +49,13 @@ namespace CAPCON
                 {
                     // Set the DataSource of the DataGridView to the list of bookings
                     dgvSchedule.DataSource = bookings;
+                    dgvConfirmation.DataSource = bookings;
+
 
                     // Optionally, auto-resize columns to fit content
                     dgvSchedule.AutoResizeColumns();
+                    dgvConfirmation.AutoResizeColumns();
+
                 }
                 else
                 {
@@ -179,6 +195,57 @@ namespace CAPCON
         private void monthCalendar1_DateSelected(object sender, DateRangeEventArgs e)
         {
             dateTimePicker1.Value = monthCalendar1.SelectionStart;
+        }
+
+        private void pnlConsched_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void btnAccept_Click(object sender, EventArgs e)
+        {
+            // Check if any cell is selected
+            if (dgvConfirmation.SelectedCells.Count > 0)
+            {
+                // Ask the user for confirmation
+                DialogResult result = MessageBox.Show("Are you sure you want to update this booking?", "Confirm Booking Update", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                // Check if the user clicked Yes
+                if (result == DialogResult.Yes)
+                {
+                    // Get the selected row
+                    DataGridViewRow selectedRow = dgvConfirmation.SelectedCells[0].OwningRow;
+
+                    // Get the booking ID from the selected row
+                    int bookingID = Convert.ToInt32(selectedRow.Cells["BookingID"].Value);
+
+                    // Call the ConfirmBooking method to confirm the booking
+                    bool success = user.ConfirmBooking(bookingID);
+
+                    // Check if the booking was successfully confirmed
+                    if (success)
+                    {
+                        // Inform the user and refresh the DataGridView
+                        MessageBox.Show("Booking confirmed successfully.", "Success", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        PopulateDataGridView(userId);
+                    }
+                    else
+                    {
+                        // Inform the user if the confirmation failed
+                        MessageBox.Show("Failed to confirm booking.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+            else
+            {
+                // Inform the user if no cell is selected
+                MessageBox.Show("Please select a booking to confirm.", "Information", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+        }
+
+        private void Schedule_Load(object sender, EventArgs e)
+        {
+
         }
     }
 }

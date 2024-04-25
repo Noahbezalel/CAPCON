@@ -43,6 +43,12 @@ namespace CAPCON
                 {
                     // Set the DataSource of the DataGridView to the list of photographers
                     dgvList.DataSource = photographers;
+                    dgvList.Columns["Password"].Visible = false;
+                    dgvList.Columns["ConfirmPass"].Visible = false;
+                    dgvList.Columns["UserType"].Visible = false;
+                    dgvList.Columns["Contact"].Visible = false;
+                    dgvList.Columns["UserImage"].Visible = false;
+
 
                     // Optionally, auto-resize columns to fit content
                     dgvList.AutoResizeColumns();
@@ -72,15 +78,22 @@ namespace CAPCON
             // Check if the UserID is valid
             if (userId != -1)
             {
-                // Parse the photographerID from lblID.Text
+                // Parse the photographerID from tbxID.Text
                 if (int.TryParse(tbxID.Text, out int photographerId))
                 {
-                    // Get the booking date from wherever it's determined
+                    // Retrieve the name of the logged-in user
+                    string clientName = User.GetUserById(userId).Firstname;
+
+                    // Retrieve the name of the chosen photographer
+                    string photographerName = User.GetUserById(photographerId).Firstname;
+
+                    // Get the booking date from dateTimePicker1 and booking time from tbxTime
                     DateTime bookingDate = dateTimePicker1.Value;
+                    TimeSpan bookingTime = TimeSpan.Parse(tbxTime.Text);
 
                     // Create a new instance of the User class and call the CreateBooking method
                     User user = new User();
-                    bool bookingSuccess = user.CreateBooking(userId, photographerId, bookingDate); // Assuming userId can be used as clientId
+                    bool bookingSuccess = user.CreateBooking(userId, photographerId, bookingDate, bookingTime, clientName, photographerName);
 
                     // Optionally, display a message to indicate whether the booking was successful
                     if (bookingSuccess)
@@ -105,6 +118,7 @@ namespace CAPCON
 
 
 
+
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
         {
             monthCalendar1.SetDate(dateTimePicker1.Value);
@@ -118,6 +132,11 @@ namespace CAPCON
         private void Explore_Load(object sender, EventArgs e)
         {
 
+        }
+
+        private void tbxTime_Click(object sender, EventArgs e)
+        {
+            tbxTime.Text = "";
         }
     }
 }

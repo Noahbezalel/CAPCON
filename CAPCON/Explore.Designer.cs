@@ -30,10 +30,12 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Explore));
             dgvList = new DataGridView();
-            btnView = new Button();
             btnBook = new Button();
             panel1 = new Panel();
             panel2 = new Panel();
+            artanPanel2 = new ArtanComponent.ArtanPanel();
+            panel7 = new Panel();
+            tbxTime = new TextBox();
             panel6 = new Panel();
             tbxID = new TextBox();
             monthCalendar1 = new MonthCalendar();
@@ -43,45 +45,49 @@
             tbxLastName = new TextBox();
             panel3 = new Panel();
             tbxFirstName = new TextBox();
+            artanPanel1 = new ArtanComponent.ArtanPanel();
             ((System.ComponentModel.ISupportInitialize)dgvList).BeginInit();
             panel2.SuspendLayout();
+            artanPanel2.SuspendLayout();
+            panel7.SuspendLayout();
             panel6.SuspendLayout();
             panel5.SuspendLayout();
             panel4.SuspendLayout();
             panel3.SuspendLayout();
+            artanPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // dgvList
             // 
             dgvList.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.AllCells;
             dgvList.AutoSizeRowsMode = DataGridViewAutoSizeRowsMode.AllCells;
+            dgvList.BackgroundColor = Color.White;
+            dgvList.BorderStyle = BorderStyle.None;
+            dgvList.CellBorderStyle = DataGridViewCellBorderStyle.None;
             dgvList.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvList.Location = new Point(12, 12);
+            dgvList.Location = new Point(26, 3);
             dgvList.Name = "dgvList";
             dgvList.RowTemplate.Height = 25;
-            dgvList.Size = new Size(430, 103);
+            dgvList.Size = new Size(948, 103);
             dgvList.TabIndex = 0;
             dgvList.CellClick += dgvList_CellContentClick;
             dgvList.CellContentClick += dgvList_CellContentClick;
             // 
-            // btnView
-            // 
-            btnView.Location = new Point(454, 92);
-            btnView.Name = "btnView";
-            btnView.Size = new Size(75, 23);
-            btnView.TabIndex = 1;
-            btnView.Text = "VIEW";
-            btnView.UseVisualStyleBackColor = true;
-            btnView.Click += btnView_Click;
-            // 
             // btnBook
             // 
-            btnBook.Location = new Point(209, 413);
+            btnBook.BackColor = Color.Transparent;
+            btnBook.Cursor = Cursors.Hand;
+            btnBook.FlatAppearance.BorderSize = 0;
+            btnBook.FlatAppearance.MouseDownBackColor = Color.Transparent;
+            btnBook.FlatAppearance.MouseOverBackColor = Color.Transparent;
+            btnBook.FlatStyle = FlatStyle.Flat;
+            btnBook.ForeColor = Color.White;
+            btnBook.Location = new Point(11, 5);
             btnBook.Name = "btnBook";
-            btnBook.Size = new Size(75, 23);
+            btnBook.Size = new Size(203, 23);
             btnBook.TabIndex = 2;
             btnBook.Text = "BOOK";
-            btnBook.UseVisualStyleBackColor = true;
+            btnBook.UseVisualStyleBackColor = false;
             btnBook.Click += btnBook_Click;
             // 
             // panel1
@@ -95,22 +101,60 @@
             // panel2
             // 
             panel2.BackColor = Color.White;
+            panel2.Controls.Add(artanPanel2);
+            panel2.Controls.Add(panel7);
             panel2.Controls.Add(panel6);
             panel2.Controls.Add(monthCalendar1);
             panel2.Controls.Add(panel5);
             panel2.Controls.Add(panel4);
             panel2.Controls.Add(panel3);
-            panel2.Controls.Add(btnBook);
+            panel2.Font = new Font("Tahoma", 9F, FontStyle.Bold, GraphicsUnit.Point);
             panel2.Location = new Point(535, 121);
             panel2.Name = "panel2";
             panel2.Size = new Size(477, 448);
             panel2.TabIndex = 5;
             // 
+            // artanPanel2
+            // 
+            artanPanel2.BackColor = Color.White;
+            artanPanel2.BorderRadius = 30;
+            artanPanel2.Controls.Add(btnBook);
+            artanPanel2.ForeColor = Color.Black;
+            artanPanel2.GradientAngle = 90F;
+            artanPanel2.GradientBottomColor = Color.CadetBlue;
+            artanPanel2.GradientTopColor = Color.DodgerBlue;
+            artanPanel2.Location = new Point(132, 407);
+            artanPanel2.Name = "artanPanel2";
+            artanPanel2.Size = new Size(224, 30);
+            artanPanel2.TabIndex = 17;
+            // 
+            // panel7
+            // 
+            panel7.BackColor = SystemColors.Control;
+            panel7.Controls.Add(tbxTime);
+            panel7.Location = new Point(132, 190);
+            panel7.Name = "panel7";
+            panel7.Size = new Size(227, 32);
+            panel7.TabIndex = 16;
+            // 
+            // tbxTime
+            // 
+            tbxTime.BackColor = SystemColors.Control;
+            tbxTime.BorderStyle = BorderStyle.None;
+            tbxTime.Font = new Font("Nirmala UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
+            tbxTime.ForeColor = Color.Black;
+            tbxTime.Location = new Point(3, 7);
+            tbxTime.Name = "tbxTime";
+            tbxTime.Size = new Size(221, 18);
+            tbxTime.TabIndex = 4;
+            tbxTime.Text = "Choose Time";
+            tbxTime.Click += tbxTime_Click;
+            // 
             // panel6
             // 
             panel6.BackColor = SystemColors.Control;
             panel6.Controls.Add(tbxID);
-            panel6.Location = new Point(131, 46);
+            panel6.Location = new Point(132, 35);
             panel6.Name = "panel6";
             panel6.Size = new Size(227, 32);
             panel6.TabIndex = 13;
@@ -128,7 +172,7 @@
             // 
             // monthCalendar1
             // 
-            monthCalendar1.Location = new Point(131, 239);
+            monthCalendar1.Location = new Point(132, 228);
             monthCalendar1.Name = "monthCalendar1";
             monthCalendar1.TabIndex = 15;
             monthCalendar1.DateChanged += monthCalendar1_DateChanged;
@@ -137,16 +181,18 @@
             // 
             panel5.BackColor = SystemColors.Control;
             panel5.Controls.Add(dateTimePicker1);
-            panel5.Location = new Point(131, 192);
+            panel5.Location = new Point(132, 149);
             panel5.Name = "panel5";
             panel5.Size = new Size(227, 35);
             panel5.TabIndex = 14;
             // 
             // dateTimePicker1
             // 
+            dateTimePicker1.CalendarFont = new Font("Tahoma", 9F, FontStyle.Regular, GraphicsUnit.Point);
+            dateTimePicker1.Font = new Font("Tahoma", 8.25F, FontStyle.Regular, GraphicsUnit.Point);
             dateTimePicker1.Location = new Point(14, 6);
             dateTimePicker1.Name = "dateTimePicker1";
-            dateTimePicker1.Size = new Size(200, 23);
+            dateTimePicker1.Size = new Size(200, 21);
             dateTimePicker1.TabIndex = 15;
             dateTimePicker1.ValueChanged += dateTimePicker1_ValueChanged;
             // 
@@ -154,7 +200,7 @@
             // 
             panel4.BackColor = SystemColors.Control;
             panel4.Controls.Add(tbxLastName);
-            panel4.Location = new Point(131, 140);
+            panel4.Location = new Point(132, 111);
             panel4.Name = "panel4";
             panel4.Size = new Size(227, 32);
             panel4.TabIndex = 13;
@@ -174,7 +220,7 @@
             // 
             panel3.BackColor = SystemColors.Control;
             panel3.Controls.Add(tbxFirstName);
-            panel3.Location = new Point(131, 93);
+            panel3.Location = new Point(132, 73);
             panel3.Name = "panel3";
             panel3.Size = new Size(227, 32);
             panel3.TabIndex = 12;
@@ -190,21 +236,37 @@
             tbxFirstName.Size = new Size(221, 18);
             tbxFirstName.TabIndex = 4;
             // 
+            // artanPanel1
+            // 
+            artanPanel1.BackColor = Color.White;
+            artanPanel1.BorderRadius = 30;
+            artanPanel1.Controls.Add(dgvList);
+            artanPanel1.ForeColor = Color.Black;
+            artanPanel1.GradientAngle = 90F;
+            artanPanel1.GradientBottomColor = Color.CadetBlue;
+            artanPanel1.GradientTopColor = Color.DodgerBlue;
+            artanPanel1.Location = new Point(12, 6);
+            artanPanel1.Name = "artanPanel1";
+            artanPanel1.Size = new Size(1000, 109);
+            artanPanel1.TabIndex = 6;
+            // 
             // Explore
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(1024, 581);
+            Controls.Add(artanPanel1);
             Controls.Add(panel2);
             Controls.Add(panel1);
-            Controls.Add(btnView);
-            Controls.Add(dgvList);
             FormBorderStyle = FormBorderStyle.None;
             Name = "Explore";
             Text = "Explore";
             Load += Explore_Load;
             ((System.ComponentModel.ISupportInitialize)dgvList).EndInit();
             panel2.ResumeLayout(false);
+            artanPanel2.ResumeLayout(false);
+            panel7.ResumeLayout(false);
+            panel7.PerformLayout();
             panel6.ResumeLayout(false);
             panel6.PerformLayout();
             panel5.ResumeLayout(false);
@@ -212,13 +274,13 @@
             panel4.PerformLayout();
             panel3.ResumeLayout(false);
             panel3.PerformLayout();
+            artanPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
         #endregion
 
         private DataGridView dgvList;
-        private Button btnView;
         private Button btnBook;
         private Panel panel1;
         private Panel panel2;
@@ -232,5 +294,9 @@
         private Panel panel6;
         private TextBox textBox2;
         private TextBox tbxID;
+        private Panel panel7;
+        private TextBox tbxTime;
+        private ArtanComponent.ArtanPanel artanPanel1;
+        private ArtanComponent.ArtanPanel artanPanel2;
     }
 }
